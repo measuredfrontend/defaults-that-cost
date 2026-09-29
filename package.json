@@ -1,0 +1,26 @@
+{
+  "name": "demo-03-defaults-that-cost",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build",
+    "start": "node build",
+    "preview": "vite preview",
+    "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+    "measure": "node scripts/measure.mjs",
+    "test:pack": "node scripts/pack-tests.mjs",
+    "recheck:preview": "node scripts/preview-recheck.mjs"
+  },
+  "devDependencies": {
+    "@sveltejs/adapter-node": "5.5.7",
+    "@sveltejs/kit": "2.70.3",
+    "@sveltejs/vite-plugin-svelte": "7.3.1",
+    "playwright": "1.63.0",
+    "svelte": "5.57.1",
+    "svelte-check": "^4.7.6",
+    "typescript": "~6",
+    "vite": "8.3.1"
+  }
+}

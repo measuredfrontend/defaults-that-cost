@@ -131,11 +131,13 @@ try {
 		// by user agent; this checks that and records what each would read without JavaScript.
 		out.stream.userAgents = {};
 		for (const route of ROUTES) {
-			const base = analyse(await fetchTimed(route, UA.browser));
+			const baseRes = await fetchTimed(route, UA.browser);
+			const base = analyse(baseRes);
 			out.stream.userAgents[route] = {};
 			for (const [name, ua] of Object.entries(UA)) {
-				const a = analyse(await fetchTimed(route, ua));
-				out.stream.userAgents[route][name] = { sameAsBrowser: JSON.stringify(a) === JSON.stringify(base), descriptionInMarkup: a.descriptionInMarkup, reviewsInMarkup: a.reviewsInMarkup };
+				const res = await fetchTimed(route, ua);
+				const a = analyse(res);
+				out.stream.userAgents[route][name] = { sameAsBrowser: JSON.stringify(a) === JSON.stringify(base), identicalBody: res.body === baseRes.body, descriptionInMarkup: a.descriptionInMarkup, reviewsInMarkup: a.reviewsInMarkup, title: a.title };
 			}
 		}
 		console.log('user agents', JSON.stringify(out.stream.userAgents));
@@ -148,6 +150,7 @@ try {
 				const ctx = await browser.newContext({ javaScriptEnabled: js });
 				const page = await ctx.newPage();
 				await page.goto(BASE + route, { waitUntil: js ? 'load' : 'domcontentloaded' });
+				await page.waitForFunction(() => performance.getEntriesByName('first-contentful-paint').length > 0, null, { timeout: 5000 }).catch(() => {});
 				if (js) await page.waitForSelector('.review', { timeout: 10000 });
 				else await page.waitForTimeout(1500);
 				const text = (await page.innerText('body')).toLowerCase();
@@ -172,7 +175,7 @@ try {
 	}
 
 	if (want('preview')) {
-		// R9 gotcha, re-checked: the same build served by `vite preview`, with and without
+		// The `vite preview` check: the same build served by `vite preview`, with and without
 		// accept-encoding (browsers always send it). firstChunkMs = first readable HTML.
 		await browser.close().catch(() => {});
 		await stopServer(server);
@@ -213,11 +216,12 @@ try {
 						const page = await b.newPage();
 						await page.goto(BASE + '/stream/streamed');
 						await page.waitForSelector('.review');
+						await page.waitForFunction(() => performance.getEntriesByName('first-contentful-paint').length > 0, null, { timeout: 5000 }).catch(() => {});
 						fcp.push(await page.evaluate(() => performance.getEntriesByName('first-contentful-paint')[0]?.startTime ?? null));
 						await page.close();
 					}
 					await b.close();
-					out.stream.vitePreview.node.browserStreamedFcpMs = fcp.slice(1).map(r1);
+					out.stream.vitePreview.node.browserStreamedFcpMs = fcp.slice(1).map(r1); // first load = warm-up
 				}
 			} finally {
 				await stopServer(proc);

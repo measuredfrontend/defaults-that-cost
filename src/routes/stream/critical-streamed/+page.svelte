@@ -3,8 +3,12 @@
 </script>
 
 <svelte:head>
-	<!-- Nothing product-specific can go here: the product isn't known when the head is sent. -->
-	<title>Product</title>
+	<!-- The head tries to use the streamed product. Without experimental async SSR, the server
+	     renders the pending state of this {#await}: nothing. -->
+	{#await data.product then p}
+		<title>{p.name}</title>
+		<meta name="description" content={p.description.slice(0, 150)} />
+	{/await}
 </svelte:head>
 
 <article id="product">

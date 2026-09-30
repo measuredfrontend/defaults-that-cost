@@ -1,6 +1,6 @@
 {
   "env": {
-    "date": "2026-09-29T04:51:47.390Z",
+    "date": "2026-09-30T17:59:45.973Z",
     "node": "v26.3.0",
     "os": "Windows_NT 10.0.26200",
     "cpu": "13th Gen Intel(R) Core(TM) i9-13900KF",
@@ -18,24 +18,18 @@
   "servers": {
     "vite preview": {
       "/stream/streamed": {
-        "firstReadMsMedian": 807,
-        "completeMsMedian": 807,
+        "firstReadMsMedian": 810,
+        "completeMsMedian": 810,
         "runs": [
           {
-            "firstReadMs": 806,
-            "completeMs": 806,
+            "firstReadMs": 810,
+            "completeMs": 810,
             "chunks": 1,
             "contentEncoding": "gzip"
           },
           {
-            "firstReadMs": 809,
-            "completeMs": 809,
-            "chunks": 1,
-            "contentEncoding": "gzip"
-          },
-          {
-            "firstReadMs": 804,
-            "completeMs": 804,
+            "firstReadMs": 808,
+            "completeMs": 808,
             "chunks": 1,
             "contentEncoding": "gzip"
           },
@@ -46,44 +40,50 @@
             "contentEncoding": "gzip"
           },
           {
-            "firstReadMs": 807,
-            "completeMs": 807,
+            "firstReadMs": 810,
+            "completeMs": 810,
+            "chunks": 1,
+            "contentEncoding": "gzip"
+          },
+          {
+            "firstReadMs": 812,
+            "completeMs": 812,
             "chunks": 1,
             "contentEncoding": "gzip"
           }
         ]
       },
       "/stream/awaited": {
-        "firstReadMsMedian": 809,
-        "completeMsMedian": 809,
+        "firstReadMsMedian": 808,
+        "completeMsMedian": 808,
         "runs": [
           {
-            "firstReadMs": 805,
-            "completeMs": 805,
+            "firstReadMs": 804,
+            "completeMs": 804,
             "chunks": 1,
             "contentEncoding": "gzip"
           },
           {
-            "firstReadMs": 809,
-            "completeMs": 809,
+            "firstReadMs": 808,
+            "completeMs": 808,
             "chunks": 1,
             "contentEncoding": "gzip"
           },
           {
-            "firstReadMs": 809,
-            "completeMs": 810,
+            "firstReadMs": 806,
+            "completeMs": 806,
             "chunks": 1,
             "contentEncoding": "gzip"
           },
           {
-            "firstReadMs": 805,
-            "completeMs": 805,
+            "firstReadMs": 808,
+            "completeMs": 808,
             "chunks": 1,
             "contentEncoding": "gzip"
           },
           {
-            "firstReadMs": 809,
-            "completeMs": 809,
+            "firstReadMs": 811,
+            "completeMs": 811,
             "chunks": 1,
             "contentEncoding": "gzip"
           }
@@ -92,36 +92,36 @@
     },
     "node build": {
       "/stream/streamed": {
-        "firstReadMsMedian": 155,
-        "completeMsMedian": 808,
+        "firstReadMsMedian": 156,
+        "completeMsMedian": 809,
         "runs": [
           {
-            "firstReadMs": 155,
-            "completeMs": 808,
-            "chunks": 2,
-            "contentEncoding": "identity"
-          },
-          {
-            "firstReadMs": 155,
-            "completeMs": 806,
-            "chunks": 2,
-            "contentEncoding": "identity"
-          },
-          {
             "firstReadMs": 157,
+            "completeMs": 809,
+            "chunks": 2,
+            "contentEncoding": "identity"
+          },
+          {
+            "firstReadMs": 156,
+            "completeMs": 815,
+            "chunks": 2,
+            "contentEncoding": "identity"
+          },
+          {
+            "firstReadMs": 156,
             "completeMs": 808,
             "chunks": 2,
             "contentEncoding": "identity"
           },
           {
-            "firstReadMs": 157,
-            "completeMs": 811,
+            "firstReadMs": 156,
+            "completeMs": 809,
             "chunks": 2,
             "contentEncoding": "identity"
           },
           {
             "firstReadMs": 155,
-            "completeMs": 808,
+            "completeMs": 809,
             "chunks": 2,
             "contentEncoding": "identity"
           }
@@ -132,20 +132,20 @@
         "completeMsMedian": 810,
         "runs": [
           {
-            "firstReadMs": 808,
-            "completeMs": 808,
+            "firstReadMs": 810,
+            "completeMs": 810,
             "chunks": 1,
             "contentEncoding": "identity"
           },
           {
             "firstReadMs": 805,
-            "completeMs": 806,
+            "completeMs": 805,
             "chunks": 1,
             "contentEncoding": "identity"
           },
           {
-            "firstReadMs": 812,
-            "completeMs": 812,
+            "firstReadMs": 811,
+            "completeMs": 811,
             "chunks": 1,
             "contentEncoding": "identity"
           },
@@ -156,8 +156,8 @@
             "contentEncoding": "identity"
           },
           {
-            "firstReadMs": 815,
-            "completeMs": 815,
+            "firstReadMs": 806,
+            "completeMs": 806,
             "chunks": 1,
             "contentEncoding": "identity"
           }

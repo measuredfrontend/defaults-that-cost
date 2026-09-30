@@ -1,6 +1,6 @@
 // Shared helpers for measure.mjs and pack-tests.mjs.
 // Everything runs against the production build on the real Node adapter server (`node build`).
-// Streaming and timing are never measured on `vite preview` or the dev server (R9); the
+// Streaming and timing are never measured on `vite preview` or the dev server; the
 // `vite preview` runs exist only to show what it does to streaming (gzip buffers it).
 import { spawn, execFileSync } from 'node:child_process';
 import http from 'node:http';
@@ -44,7 +44,7 @@ export async function startServer() {
 }
 
 /**
- * `vite preview`, only to check whether it streams (R9 was written after a probe said it doesn't).
+ * `vite preview`, only to check whether it streams (an earlier probe said it doesn't).
  * how: 'node' = node runs vite; 'bun-run' = `bun run preview` (bun respects vite's node shebang);
  * 'bun-runtime' = `bun --bun run preview` (vite runs inside Bun).
  */
@@ -231,31 +231,44 @@ export const waitHydrated = (page) => page.waitForFunction(() => document.docume
 
 /** Counts data (__data.json) and JavaScript requests with their response sizes. */
 export function trackNetwork(page) {
-	const t = { data: 0, dataBytes: 0, js: 0, jsBytes: 0, dataUrls: [] };
+	const t = { data: 0, dataBytes: 0, js: 0, jsBytes: 0, dataUrls: [], jsUrls: [] };
+	let pending = [];
 	let on = true;
-	page.on('requestfinished', async (req) => {
+	page.on('requestfinished', (req) => {
 		if (!on) return;
 		const url = req.url();
 		const isData = url.includes('__data.json');
 		const isJs = /\.js(\?|$)/.test(url);
 		if (!isData && !isJs) return;
-		let bytes = 0;
-		try {
-			const s = await req.sizes();
-			bytes = s.responseBodySize + s.responseHeadersSize;
-		} catch {}
+		// Count at once; the size lookup is async and is awaited in result().
 		if (isData) {
 			t.data++;
-			t.dataBytes += bytes;
 			t.dataUrls.push(new URL(url).pathname);
 		} else {
 			t.js++;
-			t.jsBytes += bytes;
+			t.jsUrls.push(new URL(url).pathname);
 		}
+		pending.push(
+			req
+				.sizes()
+				.then((s) => {
+					const bytes = s.responseBodySize + s.responseHeadersSize;
+					if (isData) t.dataBytes += bytes;
+					else t.jsBytes += bytes;
+				})
+				.catch(() => {})
+		);
 	});
 	return {
-		result: () => ({ ...t, dataUrls: [...t.dataUrls] }),
-		reset: () => Object.assign(t, { data: 0, dataBytes: 0, js: 0, jsBytes: 0, dataUrls: [] }),
+		result: async () => {
+			await Promise.all(pending);
+			return { ...t, dataUrls: [...t.dataUrls], jsUrls: [...t.jsUrls] };
+		},
+		reset: async () => {
+			await Promise.all(pending);
+			pending = [];
+			Object.assign(t, { data: 0, dataBytes: 0, js: 0, jsBytes: 0, dataUrls: [], jsUrls: [] });
+		},
 		stop: () => (on = false)
 	};
 }
@@ -278,15 +291,15 @@ export async function runScenario(browser, { query = '', path, delay = '150-300'
 		await page.goto(BASE + '/products' + query);
 		await waitHydrated(page);
 		await sleep(300); // let eager/viewport code preloading finish; counted in jsBeforePath
-		const jsBeforePath = net.result();
-		net.reset();
+		const jsBeforePath = await net.result();
+		await net.reset();
 		await resetStats();
 		const t0 = performance.now();
 		const opened = await path(page, rng(seed));
 		await page.waitForSelector(opened.waitFor, { timeout: 15000 });
 		await sleep(600); // let stray preloads finish
 		const stats = await getStats();
-		const n = net.result();
+		const n = await net.result();
 		const probe = await page.evaluate(() => ({ gaps: window.__gaps ?? [], md: window.__md, content: window.__content }));
 		const loads = Object.values(stats.loads).reduce((a, b) => a + b, 0);
 		return {
@@ -306,6 +319,8 @@ export async function runScenario(browser, { query = '', path, delay = '150-300'
 			medianMoveGapMs: r1(median(probe.gaps.filter((g) => g <= 60))),
 			clickToContentMs: probe.md && probe.content ? r1(probe.content - probe.md) : null,
 			dataUrls: n.dataUrls,
+			jsUrlsBeforePath: jsBeforePath.jsUrls,
+			jsUrlsDuringPath: n.jsUrls,
 			opened: opened.opened,
 			...(opened.scrolls ? { scrolls: opened.scrolls } : {})
 		};

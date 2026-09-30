@@ -1,4 +1,4 @@
-// Re-checks probe P3's "vite preview does not stream" with the probe's own client: Node's
+// Re-checks an earlier probe's "vite preview does not stream" with the probe's own client: Node's
 // global fetch (which sends accept-encoding and decompresses, like a browser).
 // Starts `vite preview` and then `node build` on port 4303, fetches /stream/streamed and
 // /stream/awaited 6 times each (first run = warm-up), writes results/preview-recheck.json.

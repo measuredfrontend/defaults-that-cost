@@ -1,4 +1,4 @@
-// Tests that back every rule in the Measured Rules pack (R14).
+// Tests that back every rule in the Measured Rules pack.
 //   bun run build && bun run test:pack
 // Each test states the behaviour a rule depends on. If a SvelteKit release changes it, the
 // test fails and the rule gets reviewed. Writes results/pack-tests.json.
@@ -32,7 +32,9 @@ const scan = (query, extra = {}) => runScenario(browser, { query, path: PATHS.sc
 try {
 	await test('T1', 'rule 1', 'with the scaffolded hover default, reading a list of 12 links and opening one runs more server loads than pages opened', async () => {
 		const r = await scan('');
-		expect(r.serverLoads >= 6, `expected at least 6 server loads, got ${r.serverLoads}`);
+		// 12 rests + the click. Row 7 is preloaded twice (while reading and when coming back):
+		// the one-slot cache, see T5. So at least 12; 13 in every measured run.
+		expect(r.serverLoads >= 12, `expected at least 12 server loads, got ${r.serverLoads}`);
 		return { serverLoads: r.serverLoads, pagesOpened: 1, dataBytes: r.dataBytes };
 	});
 
@@ -101,9 +103,13 @@ try {
 		const off = await runLatency(browser, { query: '?data=false', delay: 300, dwell: 300, reps: 5 });
 		const hover0 = await runLatency(browser, { delay: 300, dwell: 0, reps: 5 });
 		const tap0 = await runLatency(browser, { query: '?data=tap', delay: 300, dwell: 0, reps: 5 });
+		const hover100 = await runLatency(browser, { delay: 300, dwell: 100, reps: 5 });
 		expect(off.medianMs - hover.medianMs >= 150, `hover ${hover.medianMs} ms vs off ${off.medianMs} ms`);
 		expect(Math.abs(hover0.medianMs - tap0.medianMs) < 40, `no rest: hover ${hover0.medianMs} vs tap ${tap0.medianMs}`);
-		return { rest300: { hover: hover.medianMs, off: off.medianMs }, rest0: { hover: hover0.medianMs, tap: tap0.medianMs } };
+		// Upper bound: a 100 ms rest can't save much more than 100 ms over tap (30 ms tolerance).
+		const gain100 = tap0.medianMs - hover100.medianMs;
+		expect(gain100 > 50 && gain100 <= 130, `rest 100: hover ${hover100.medianMs} vs tap ${tap0.medianMs} (gain ${gain100})`);
+		return { rest300: { hover: hover.medianMs, off: off.medianMs }, rest100: { hover: hover100.medianMs, gainOverTap: Math.round(gain100) }, rest0: { hover: hover0.medianMs, tap: tap0.medianMs } };
 	});
 
 	await test('T11', 'rule 1', 'with reduced data usage (navigator.connection.saveData) SvelteKit does not preload: one server load', async () => {
@@ -137,12 +143,16 @@ try {
 		return { reviewsInMarkup: a.reviewsInMarkup, firstChunkMs: r.firstChunkMs };
 	});
 
-	await test('T14', 'rule 8', 'streaming the main content leaves it out of the markup, the title and the meta description; awaiting it keeps it', async () => {
-		const bad = analyse(await fetchTimed('/stream/critical-streamed'));
+	await test('T14', 'rule 8', 'without experimental async SSR, a <svelte:head> that awaits streamed data renders no title and no meta description; the main content is not in the markup either', async () => {
+		// Both pages try to put the product name and description in <svelte:head>:
+		// critical-streamed from the streamed promise ({#await} in the head), streamed from awaited data.
+		const badRes = await fetchTimed('/stream/critical-streamed');
+		const bad = analyse(badRes);
 		const good = analyse(await fetchTimed('/stream/streamed'));
-		expect(!bad.descriptionInMarkup && bad.metaDescription === null && bad.title === 'Product', JSON.stringify(bad));
-		expect(good.descriptionInMarkup && good.metaDescription && good.title !== 'Product', JSON.stringify(good));
-		return { streamedMain: { descriptionInMarkup: false, title: bad.title }, awaitedMain: { descriptionInMarkup: true, title: good.title } };
+		const head = badRes.body.split('</head>')[0];
+		expect(!bad.descriptionInMarkup && bad.title === null && bad.metaDescription === null && !head.includes('Trekking pole 7'), JSON.stringify(bad));
+		expect(good.descriptionInMarkup && good.metaDescription && good.title === 'Ridge Trekking pole 7', JSON.stringify(good));
+		return { streamedMain: { descriptionInMarkup: false, title: bad.title, metaDescription: bad.metaDescription }, awaitedMain: { descriptionInMarkup: true, title: good.title } };
 	});
 
 	await test('T15', 'rule 7', 'a browser with JavaScript off shows the placeholder, never the streamed content', async () => {
@@ -160,15 +170,15 @@ try {
 		return { firstChunkMs: r.firstChunkMs, completeMs: r.completeMs, chunks: r.chunks, contentEncoding: r.encoding };
 	});
 
-	await test('T17', 'rule 10', 'SvelteKit sends crawlers the same HTML as browsers: bot user agents get the same markup text', async () => {
+	await test('T17', 'rule 10', 'SvelteKit sends crawlers the same HTML as browsers: bot user agents get a byte-identical response body', async () => {
 		const out = {};
-		for (const route of ['/stream/streamed', '/stream/critical-streamed']) {
-			const base = analyse(await fetchTimed(route, UA.browser));
+		for (const route of ['/stream/awaited', '/stream/streamed', '/stream/critical-streamed']) {
+			const base = (await fetchTimed(route, UA.browser)).body;
 			for (const [name, ua] of Object.entries(UA)) {
-				const a = analyse(await fetchTimed(route, ua));
-				expect(JSON.stringify(a) === JSON.stringify(base), `${name} on ${route} differs`);
+				const body = (await fetchTimed(route, ua)).body;
+				expect(body === base, `${name} on ${route}: body differs (${body.length} vs ${base.length} chars)`);
 			}
-			out[route] = `same for ${Object.keys(UA).length} user agents`;
+			out[route] = `identical body for ${Object.keys(UA).length} user agents`;
 		}
 		return out;
 	});

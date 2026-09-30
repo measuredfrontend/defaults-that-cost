@@ -24,7 +24,7 @@
 
 <div data-sveltekit-preload-data={data} data-sveltekit-preload-code={code}>
 	<header>
-		<a class="brand" href="/">Trailhead</a>
+		<a class="brand" href="/">Fernwick Outfitters</a>
 		<nav>
 			{#each nav as [href, label] (href)}
 				<a {href} data-testid="nav-{label.toLowerCase()}">{label}</a>
@@ -32,7 +32,7 @@
 		</nav>
 	</header>
 	<main>{@render children()}</main>
-	<footer>Trailhead is a demo store for measurements. Nothing here is for sale.</footer>
+	<footer>Fernwick Outfitters is a made-up demo store for measurements. Nothing here is for sale.</footer>
 </div>
 
 <style>

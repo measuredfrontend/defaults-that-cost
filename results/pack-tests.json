@@ -1,6 +1,6 @@
 {
   "env": {
-    "date": "2026-09-29T04:51:47.333Z",
+    "date": "2026-09-30T17:59:45.920Z",
     "node": "v26.3.0",
     "os": "Windows_NT 10.0.26200",
     "cpu": "13th Gen Intel(R) Core(TM) i9-13900KF",
@@ -16,16 +16,16 @@
   },
   "otherLoad": {
     "before": {
-      "at": "2026-09-29T04:48:54.200Z",
+      "at": "2026-09-30T17:56:41.509Z",
       "pythonProcesses": 0,
       "cpuBusyPercent": 3,
-      "gpuUtilPercentAndMemMiB": "2, 3451"
+      "gpuUtilPercentAndMemMiB": "0, 3389"
     },
     "after": {
-      "at": "2026-09-29T04:51:46.328Z",
+      "at": "2026-09-30T17:59:44.914Z",
       "pythonProcesses": 0,
-      "cpuBusyPercent": 6,
-      "gpuUtilPercentAndMemMiB": "4, 3430"
+      "cpuBusyPercent": 3,
+      "gpuUtilPercentAndMemMiB": "2, 3344"
     }
   },
   "results": [
@@ -37,7 +37,7 @@
       "detail": {
         "serverLoads": 13,
         "pagesOpened": 1,
-        "dataBytes": 24564
+        "dataBytes": 20792
       }
     },
     {
@@ -76,7 +76,6 @@
       "detail": {
         "serverLoads": 3,
         "dataUrls": [
-          "/products/2/__data.json",
           "/products/5/__data.json",
           "/products/2/__data.json"
         ]
@@ -144,12 +143,16 @@
       "pass": true,
       "detail": {
         "rest300": {
-          "hover": 95,
-          "off": 405.6
+          "hover": 94.3,
+          "off": 407.7
+        },
+        "rest100": {
+          "hover": 220.6,
+          "gainOverTap": 95
         },
         "rest0": {
-          "hover": 315.6,
-          "tap": 305
+          "hover": 309.4,
+          "tap": 315.8
         }
       }
     },
@@ -180,18 +183,19 @@
       "pass": true,
       "detail": {
         "reviewsInMarkup": true,
-        "firstChunkMs": 818.8
+        "firstChunkMs": 811.2
       }
     },
     {
       "id": "T14",
       "rule": "rule 8",
-      "title": "streaming the main content leaves it out of the markup, the title and the meta description; awaiting it keeps it",
+      "title": "without experimental async SSR, a <svelte:head> that awaits streamed data renders no title and no meta description; the main content is not in the markup either",
       "pass": true,
       "detail": {
         "streamedMain": {
           "descriptionInMarkup": false,
-          "title": "Product"
+          "title": null,
+          "metaDescription": null
         },
         "awaitedMain": {
           "descriptionInMarkup": true,
@@ -215,8 +219,8 @@
       "title": "on `node build` the streamed page sends its first chunk before the slow call finishes, with the awaited content in it",
       "pass": true,
       "detail": {
-        "firstChunkMs": 165.3,
-        "completeMs": 803.6,
+        "firstChunkMs": 166,
+        "completeMs": 801.5,
         "chunks": 2,
         "contentEncoding": "identity"
       }
@@ -224,11 +228,12 @@
     {
       "id": "T17",
       "rule": "rule 10",
-      "title": "SvelteKit sends crawlers the same HTML as browsers: bot user agents get the same markup text",
+      "title": "SvelteKit sends crawlers the same HTML as browsers: bot user agents get a byte-identical response body",
       "pass": true,
       "detail": {
-        "/stream/streamed": "same for 6 user agents",
-        "/stream/critical-streamed": "same for 6 user agents"
+        "/stream/awaited": "identical body for 6 user agents",
+        "/stream/streamed": "identical body for 6 user agents",
+        "/stream/critical-streamed": "identical body for 6 user agents"
       }
     },
     {
@@ -238,12 +243,12 @@
       "pass": true,
       "detail": {
         "gzip": {
-          "firstChunkMs": 807.3,
+          "firstChunkMs": 808.8,
           "contentEncoding": "gzip",
           "chunks": 1
         },
         "noAcceptEncoding": {
-          "firstChunkMs": 155.5,
+          "firstChunkMs": 154.8,
           "chunks": 2
         }
       }

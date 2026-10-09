@@ -75,7 +75,11 @@ export async function stopServer(proc) {
 }
 
 export async function resetStats() {
-	await fetch(BASE + '/api/stats', { method: 'DELETE' });
+	// SvelteKit 3 treats a DELETE without a content type like a form submission and rejects it
+	// without a matching Origin ("Cross-site DELETE form submissions are forbidden", 403).
+	// SvelteKit 2 accepted it. A JSON request isn't a form, so it passes on both.
+	const r = await fetch(BASE + '/api/stats', { method: 'DELETE', headers: { 'content-type': 'application/json' } });
+	if (r.status !== 204) throw new Error(`resetStats: ${r.status} ${await r.text()}`);
 }
 export async function getStats() {
 	return (await fetch(BASE + '/api/stats')).json();

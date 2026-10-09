@@ -1,5 +1,5 @@
-import { countLoad } from '$lib/server/counter';
-import { simulatedDelay } from '$lib/server/delay';
+import { countLoad } from '#lib/server/counter.js';
+import { simulatedDelay } from '#lib/server/delay.js';
 
 export const load = async ({ params, cookies }) => {
 	countLoad('/section/[name]');

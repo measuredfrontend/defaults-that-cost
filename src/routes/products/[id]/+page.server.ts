@@ -1,7 +1,7 @@
 import { error } from '@sveltejs/kit';
-import { detail, PRODUCT_COUNT } from '$lib/server/catalog';
-import { countLoad } from '$lib/server/counter';
-import { simulatedDelay } from '$lib/server/delay';
+import { detail, PRODUCT_COUNT } from '#lib/server/catalog.js';
+import { countLoad } from '#lib/server/counter.js';
+import { simulatedDelay } from '#lib/server/delay.js';
 
 export const load = async ({ params, cookies }) => {
 	const id = Number(params.id);

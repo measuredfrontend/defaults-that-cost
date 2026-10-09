@@ -1,8 +1,7 @@
 // Measurement endpoint: GET returns the counters, DELETE resets them. Demo only.
-import { json } from '@sveltejs/kit';
-import { reset, snapshot } from '$lib/server/counter';
+import { reset, snapshot } from '#lib/server/counter.js';
 
-export const GET = () => json(snapshot());
+export const GET = () => Response.json(snapshot());
 
 export const DELETE = () => {
 	reset();

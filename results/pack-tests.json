@@ -1,14 +1,14 @@
 {
   "env": {
-    "date": "2026-09-30T17:59:45.920Z",
+    "date": "2026-10-09T10:53:14.864Z",
     "node": "v26.3.0",
     "os": "Windows_NT 10.0.26200",
     "cpu": "13th Gen Intel(R) Core(TM) i9-13900KF",
     "cores": 32,
     "ramGb": 64,
     "svelte": "5.57.1",
-    "kit": "2.70.3",
-    "adapterNode": "5.5.7",
+    "kit": "3.0.1",
+    "adapterNode": "6.0.0",
     "vite": "8.3.1",
     "playwright": "1.63.0",
     "server": "node build (adapter-node), production build, 127.0.0.1:4303",
@@ -16,16 +16,16 @@
   },
   "otherLoad": {
     "before": {
-      "at": "2026-09-30T17:56:41.509Z",
-      "pythonProcesses": 0,
-      "cpuBusyPercent": 3,
-      "gpuUtilPercentAndMemMiB": "0, 3389"
+      "at": "2026-10-09T10:50:09.885Z",
+      "pythonProcesses": 4,
+      "cpuBusyPercent": 10,
+      "gpuUtilPercentAndMemMiB": "7, 3996"
     },
     "after": {
-      "at": "2026-09-30T17:59:44.914Z",
-      "pythonProcesses": 0,
-      "cpuBusyPercent": 3,
-      "gpuUtilPercentAndMemMiB": "2, 3344"
+      "at": "2026-10-09T10:53:13.848Z",
+      "pythonProcesses": 4,
+      "cpuBusyPercent": 12,
+      "gpuUtilPercentAndMemMiB": "5, 4016"
     }
   },
   "results": [
@@ -37,7 +37,7 @@
       "detail": {
         "serverLoads": 13,
         "pagesOpened": 1,
-        "dataBytes": 20792
+        "dataBytes": 25032
       }
     },
     {
@@ -65,7 +65,7 @@
       "pass": true,
       "detail": {
         "serverLoads": 1,
-        "clickToContentMs": 95.8
+        "clickToContentMs": 94.9
       }
     },
     {
@@ -76,6 +76,7 @@
       "detail": {
         "serverLoads": 3,
         "dataUrls": [
+          "/products/2/__data.json",
           "/products/5/__data.json",
           "/products/2/__data.json"
         ]
@@ -121,17 +122,17 @@
       "detail": {
         "hover": {
           "serverLoads": 1,
-          "jsBeforePath": 9,
+          "jsBeforePath": 11,
           "jsDuringPath": 1
         },
         "viewport": {
           "serverLoads": 1,
-          "jsBeforePath": 12,
+          "jsBeforePath": 14,
           "jsDuringPath": 0
         },
         "eager": {
           "serverLoads": 1,
-          "jsBeforePath": 12,
+          "jsBeforePath": 14,
           "jsDuringPath": 0
         }
       }
@@ -143,16 +144,16 @@
       "pass": true,
       "detail": {
         "rest300": {
-          "hover": 94.3,
-          "off": 407.7
+          "hover": 94.5,
+          "off": 405.8
         },
         "rest100": {
-          "hover": 220.6,
-          "gainOverTap": 95
+          "hover": 220.4,
+          "gainOverTap": 84
         },
         "rest0": {
-          "hover": 309.4,
-          "tap": 315.8
+          "hover": 311.3,
+          "tap": 304.1
         }
       }
     },
@@ -183,7 +184,7 @@
       "pass": true,
       "detail": {
         "reviewsInMarkup": true,
-        "firstChunkMs": 811.2
+        "firstChunkMs": 810.9
       }
     },
     {
@@ -219,8 +220,8 @@
       "title": "on `node build` the streamed page sends its first chunk before the slow call finishes, with the awaited content in it",
       "pass": true,
       "detail": {
-        "firstChunkMs": 166,
-        "completeMs": 801.5,
+        "firstChunkMs": 166.5,
+        "completeMs": 806.7,
         "chunks": 2,
         "contentEncoding": "identity"
       }
@@ -243,12 +244,12 @@
       "pass": true,
       "detail": {
         "gzip": {
-          "firstChunkMs": 808.8,
+          "firstChunkMs": 811,
           "contentEncoding": "gzip",
           "chunks": 1
         },
         "noAcceptEncoding": {
-          "firstChunkMs": 154.8,
+          "firstChunkMs": 153.2,
           "chunks": 2
         }
       }

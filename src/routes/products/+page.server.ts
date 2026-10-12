@@ -1,5 +1,5 @@
-import { allProducts } from '$lib/server/catalog';
-import { countLoad } from '$lib/server/counter';
+import { allProducts } from '#lib/server/catalog.js';
+import { countLoad } from '#lib/server/counter.js';
 
 export const load = async ({ url }) => {
 	countLoad('/products');

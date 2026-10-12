@@ -1,5 +1,5 @@
-import type { Handle } from '@sveltejs/kit';
-import { countRequest } from '$lib/server/counter';
+import type { Handle } from '@sveltejs/kit/hooks';
+import { countRequest } from '#lib/server/counter.js';
 
 export const handle: Handle = async ({ event, resolve }) => {
 	// Count what reaches the server. `isDataRequest` is true for the __data.json requests that

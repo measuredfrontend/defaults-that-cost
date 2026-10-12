@@ -1,0 +1,168 @@
+{
+  "env": {
+    "date": "2026-09-30T17:59:45.973Z",
+    "node": "v26.3.0",
+    "os": "Windows_NT 10.0.26200",
+    "cpu": "13th Gen Intel(R) Core(TM) i9-13900KF",
+    "cores": 32,
+    "ramGb": 64,
+    "svelte": "5.57.1",
+    "kit": "2.70.3",
+    "adapterNode": "5.5.7",
+    "vite": "8.3.1",
+    "playwright": "1.63.0",
+    "server": "node build (adapter-node), production build, 127.0.0.1:4303",
+    "browser": "Chromium (Playwright), headless, same machine"
+  },
+  "client": "Node global fetch (undici): sends accept-encoding, decompresses",
+  "servers": {
+    "vite preview": {
+      "/stream/streamed": {
+        "firstReadMsMedian": 810,
+        "completeMsMedian": 810,
+        "runs": [
+          {
+            "firstReadMs": 810,
+            "completeMs": 810,
+            "chunks": 1,
+            "contentEncoding": "gzip"
+          },
+          {
+            "firstReadMs": 808,
+            "completeMs": 808,
+            "chunks": 1,
+            "contentEncoding": "gzip"
+          },
+          {
+            "firstReadMs": 810,
+            "completeMs": 810,
+            "chunks": 1,
+            "contentEncoding": "gzip"
+          },
+          {
+            "firstReadMs": 810,
+            "completeMs": 810,
+            "chunks": 1,
+            "contentEncoding": "gzip"
+          },
+          {
+            "firstReadMs": 812,
+            "completeMs": 812,
+            "chunks": 1,
+            "contentEncoding": "gzip"
+          }
+        ]
+      },
+      "/stream/awaited": {
+        "firstReadMsMedian": 808,
+        "completeMsMedian": 808,
+        "runs": [
+          {
+            "firstReadMs": 804,
+            "completeMs": 804,
+            "chunks": 1,
+            "contentEncoding": "gzip"
+          },
+          {
+            "firstReadMs": 808,
+            "completeMs": 808,
+            "chunks": 1,
+            "contentEncoding": "gzip"
+          },
+          {
+            "firstReadMs": 806,
+            "completeMs": 806,
+            "chunks": 1,
+            "contentEncoding": "gzip"
+          },
+          {
+            "firstReadMs": 808,
+            "completeMs": 808,
+            "chunks": 1,
+            "contentEncoding": "gzip"
+          },
+          {
+            "firstReadMs": 811,
+            "completeMs": 811,
+            "chunks": 1,
+            "contentEncoding": "gzip"
+          }
+        ]
+      }
+    },
+    "node build": {
+      "/stream/streamed": {
+        "firstReadMsMedian": 156,
+        "completeMsMedian": 809,
+        "runs": [
+          {
+            "firstReadMs": 157,
+            "completeMs": 809,
+            "chunks": 2,
+            "contentEncoding": "identity"
+          },
+          {
+            "firstReadMs": 156,
+            "completeMs": 815,
+            "chunks": 2,
+            "contentEncoding": "identity"
+          },
+          {
+            "firstReadMs": 156,
+            "completeMs": 808,
+            "chunks": 2,
+            "contentEncoding": "identity"
+          },
+          {
+            "firstReadMs": 156,
+            "completeMs": 809,
+            "chunks": 2,
+            "contentEncoding": "identity"
+          },
+          {
+            "firstReadMs": 155,
+            "completeMs": 809,
+            "chunks": 2,
+            "contentEncoding": "identity"
+          }
+        ]
+      },
+      "/stream/awaited": {
+        "firstReadMsMedian": 810,
+        "completeMsMedian": 810,
+        "runs": [
+          {
+            "firstReadMs": 810,
+            "completeMs": 810,
+            "chunks": 1,
+            "contentEncoding": "identity"
+          },
+          {
+            "firstReadMs": 805,
+            "completeMs": 805,
+            "chunks": 1,
+            "contentEncoding": "identity"
+          },
+          {
+            "firstReadMs": 811,
+            "completeMs": 811,
+            "chunks": 1,
+            "contentEncoding": "identity"
+          },
+          {
+            "firstReadMs": 810,
+            "completeMs": 810,
+            "chunks": 1,
+            "contentEncoding": "identity"
+          },
+          {
+            "firstReadMs": 806,
+            "completeMs": 806,
+            "chunks": 1,
+            "contentEncoding": "identity"
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,4 +1,4 @@
-import { loadProduct, loadReviews } from '$lib/server/backend';
+import { loadProduct, loadReviews } from '#lib/server/backend.js';
 
 // Everything awaited: the HTML is sent when the slowest call is done.
 export const load = async () => {

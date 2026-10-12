@@ -1,4 +1,4 @@
-import { loadProduct, loadReviews } from '$lib/server/backend';
+import { loadProduct, loadReviews } from '#lib/server/backend.js';
 
 // The product is awaited (it is in the HTML); reviews are streamed after the first chunk.
 export const load = async () => {

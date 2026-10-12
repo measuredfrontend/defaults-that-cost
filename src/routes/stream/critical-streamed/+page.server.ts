@@ -1,4 +1,4 @@
-import { loadProduct, loadReviews } from '$lib/server/backend';
+import { loadProduct, loadReviews } from '#lib/server/backend.js';
 
 // Anti-pattern: the main content is streamed too, so the first HTML has only placeholders.
 export const load = () => {

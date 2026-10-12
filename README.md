@@ -110,9 +110,9 @@ Findings:
 5. Streamed data is not in the HTML markup. A head that awaits streamed data renders no title and no meta description (without experimental async SSR).
 6. `vite preview` doesn't stream to browsers, because its gzip isn't flushed, while the first wire byte still looks fast. This corrects our own earlier probe, which said "vite preview does not stream" without the reason.
 
-Raw numbers: `results/measure.json`, `results/pack-tests.json`, `results/preview-recheck.json`. Each file records the date, versions, machine, and whether other load was running (`otherLoad`).
+Raw numbers for the tables above: `results/kit2-2026-09-30/` (`measure.json`, `pack-tests.json`, `preview-recheck.json`). Each file records the date, versions, machine, and whether other load was running (`otherLoad`).
 
-Versions: SvelteKit 2.70.3, Svelte 5.57.1, adapter-node 5.5.7, Vite 8.3.1, Playwright 1.63.0 (Chromium), Node 26.3, Windows 11, i9-13900KF.
+Versions: the code on `main` runs on SvelteKit 3.0.1 (adapter-node 6.0.0). The tables above are from the SvelteKit 2.70.3 run of 30 Sep 2026: Svelte 5.57.1, adapter-node 5.5.7, Vite 8.3.1, Playwright 1.63.0 (Chromium), Node 26.3, Windows 11, i9-13900KF. The SvelteKit 3.0.1 run of 9 Oct 2026 is in `results/kit3-2026-10-09/` (the same files are directly in `results/`). Server loads and JS requests per path are the same. Two details moved: the list page made 11 JS requests before the pointer path started instead of 9, and in the hover-wait-click case the click downloaded 1.9 KB of data where SvelteKit 2 downloaded none; we have not looked into why yet. That run used 3 repetitions per path instead of 5, and `vite preview` inside Bun's runtime did not start, so that one case has no SvelteKit 3 number. The SvelteKit 2 code is at the tag `kit2`.
 
 ## Rules you can use today
 

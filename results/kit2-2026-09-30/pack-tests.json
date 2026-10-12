@@ -1,0 +1,257 @@
+{
+  "env": {
+    "date": "2026-09-30T17:59:45.920Z",
+    "node": "v26.3.0",
+    "os": "Windows_NT 10.0.26200",
+    "cpu": "13th Gen Intel(R) Core(TM) i9-13900KF",
+    "cores": 32,
+    "ramGb": 64,
+    "svelte": "5.57.1",
+    "kit": "2.70.3",
+    "adapterNode": "5.5.7",
+    "vite": "8.3.1",
+    "playwright": "1.63.0",
+    "server": "node build (adapter-node), production build, 127.0.0.1:4303",
+    "browser": "Chromium (Playwright), headless, same machine"
+  },
+  "otherLoad": {
+    "before": {
+      "at": "2026-09-30T17:56:41.509Z",
+      "pythonProcesses": 0,
+      "cpuBusyPercent": 3,
+      "gpuUtilPercentAndMemMiB": "0, 3389"
+    },
+    "after": {
+      "at": "2026-09-30T17:59:44.914Z",
+      "pythonProcesses": 0,
+      "cpuBusyPercent": 3,
+      "gpuUtilPercentAndMemMiB": "2, 3344"
+    }
+  },
+  "results": [
+    {
+      "id": "T1",
+      "rule": "rule 1",
+      "title": "with the scaffolded hover default, reading a list of 12 links and opening one runs more server loads than pages opened",
+      "pass": true,
+      "detail": {
+        "serverLoads": 13,
+        "pagesOpened": 1,
+        "dataBytes": 20792
+      }
+    },
+    {
+      "id": "T2",
+      "rule": "rule 1",
+      "title": "with preload-data=\"tap\" the same path runs exactly one server load",
+      "pass": true,
+      "detail": {
+        "serverLoads": 1
+      }
+    },
+    {
+      "id": "T3",
+      "rule": "rule 1",
+      "title": "with preload-data=\"false\" the same path runs exactly one server load",
+      "pass": true,
+      "detail": {
+        "serverLoads": 1
+      }
+    },
+    {
+      "id": "T4",
+      "rule": "rule 2",
+      "title": "a hover preload is reused when that link is clicked, even 10 s later (no time limit in the client)",
+      "pass": true,
+      "detail": {
+        "serverLoads": 1,
+        "clickToContentMs": 95.8
+      }
+    },
+    {
+      "id": "T5",
+      "rule": "rule 2",
+      "title": "only the most recent preload is kept: hover A, hover B, click A runs A twice (3 loads)",
+      "pass": true,
+      "detail": {
+        "serverLoads": 3,
+        "dataUrls": [
+          "/products/5/__data.json",
+          "/products/2/__data.json"
+        ]
+      }
+    },
+    {
+      "id": "T6",
+      "rule": "rule 3",
+      "title": "preload-data=\"tap\" on the list container stops list preloads while the nav keeps hover",
+      "pass": true,
+      "detail": {
+        "listScanLoads": 1,
+        "navBrowseLoads": 5
+      }
+    },
+    {
+      "id": "T7",
+      "rule": "rule 4",
+      "title": "on a touch device, hover and tap behave the same for a tap: one server load",
+      "pass": true,
+      "detail": {
+        "hover": 1,
+        "tap": 1
+      }
+    },
+    {
+      "id": "T8",
+      "rule": "rule 4",
+      "title": "on a touch device, a scroll swipe that starts on a link preloads it (touchstart), with hover or tap",
+      "pass": true,
+      "detail": {
+        "hover": 4,
+        "tap": 4,
+        "off": 1,
+        "swipes": 3
+      }
+    },
+    {
+      "id": "T9",
+      "rule": "rule 5",
+      "title": "code-only preloading (preload-data off, preload-code hover/viewport/eager) runs no extra server load",
+      "pass": true,
+      "detail": {
+        "hover": {
+          "serverLoads": 1,
+          "jsBeforePath": 9,
+          "jsDuringPath": 1
+        },
+        "viewport": {
+          "serverLoads": 1,
+          "jsBeforePath": 12,
+          "jsDuringPath": 0
+        },
+        "eager": {
+          "serverLoads": 1,
+          "jsBeforePath": 12,
+          "jsDuringPath": 0
+        }
+      }
+    },
+    {
+      "id": "T10",
+      "rule": "rule 6",
+      "title": "resting 300 ms on a link before clicking makes hover faster than off (300 ms load): the gain is real but bounded by the rest time",
+      "pass": true,
+      "detail": {
+        "rest300": {
+          "hover": 94.3,
+          "off": 407.7
+        },
+        "rest100": {
+          "hover": 220.6,
+          "gainOverTap": 95
+        },
+        "rest0": {
+          "hover": 309.4,
+          "tap": 315.8
+        }
+      }
+    },
+    {
+      "id": "T11",
+      "rule": "rule 1",
+      "title": "with reduced data usage (navigator.connection.saveData) SvelteKit does not preload: one server load",
+      "pass": true,
+      "detail": {
+        "serverLoads": 1
+      }
+    },
+    {
+      "id": "T12",
+      "rule": "rule 7",
+      "title": "a streamed (un-awaited) promise is not in the HTML markup, only in a script payload",
+      "pass": true,
+      "detail": {
+        "reviewsInMarkup": false,
+        "reviewsInScriptPayload": true,
+        "placeholderInMarkup": true
+      }
+    },
+    {
+      "id": "T13",
+      "rule": "rule 7",
+      "title": "awaited data is in the markup, and the first byte waits for the slowest awaited call",
+      "pass": true,
+      "detail": {
+        "reviewsInMarkup": true,
+        "firstChunkMs": 811.2
+      }
+    },
+    {
+      "id": "T14",
+      "rule": "rule 8",
+      "title": "without experimental async SSR, a <svelte:head> that awaits streamed data renders no title and no meta description; the main content is not in the markup either",
+      "pass": true,
+      "detail": {
+        "streamedMain": {
+          "descriptionInMarkup": false,
+          "title": null,
+          "metaDescription": null
+        },
+        "awaitedMain": {
+          "descriptionInMarkup": true,
+          "title": "Ridge Trekking pole 7"
+        }
+      }
+    },
+    {
+      "id": "T15",
+      "rule": "rule 7",
+      "title": "a browser with JavaScript off shows the placeholder, never the streamed content",
+      "pass": true,
+      "detail": {
+        "jsOff": "placeholder",
+        "jsOn": "reviews"
+      }
+    },
+    {
+      "id": "T16",
+      "rule": "rule 9",
+      "title": "on `node build` the streamed page sends its first chunk before the slow call finishes, with the awaited content in it",
+      "pass": true,
+      "detail": {
+        "firstChunkMs": 166,
+        "completeMs": 801.5,
+        "chunks": 2,
+        "contentEncoding": "identity"
+      }
+    },
+    {
+      "id": "T17",
+      "rule": "rule 10",
+      "title": "SvelteKit sends crawlers the same HTML as browsers: bot user agents get a byte-identical response body",
+      "pass": true,
+      "detail": {
+        "/stream/awaited": "identical body for 6 user agents",
+        "/stream/streamed": "identical body for 6 user agents",
+        "/stream/critical-streamed": "identical body for 6 user agents"
+      }
+    },
+    {
+      "id": "T18",
+      "rule": "rule 9",
+      "title": "`vite preview` buffers a streamed page when the client accepts gzip (every browser does); without accept-encoding it streams",
+      "pass": true,
+      "detail": {
+        "gzip": {
+          "firstChunkMs": 808.8,
+          "contentEncoding": "gzip",
+          "chunks": 1
+        },
+        "noAcceptEncoding": {
+          "firstChunkMs": 154.8,
+          "chunks": 2
+        }
+      }
+    }
+  ]
+}
